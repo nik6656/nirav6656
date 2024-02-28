@@ -1,0 +1,100 @@
+# Author class, which defines properties of Author
+class Author:
+  def __init__(self, author_id, name, birth_year, nationality):
+      self.author_id = author_id
+      self.name = name
+      self.birth_year = birth_year
+      self.nationality = nationality
+
+# Book class, which defines properties of Book
+class Book:
+  def __init__(self, book_id, title, publication_year, authors):
+      self.book_id = book_id
+      self.title = title
+      self.publication_year = publication_year
+      self.authors = authors
+
+# User Class, Which has user-related function
+class User:
+  def __init__(self, user_id, name, email, borrowed_books=None):
+      self.user_id = user_id
+      self.name = name
+      self.email = email
+      self.borrowed_books = borrowed_books or []
+    
+  # borrow_book function, to borrow the book to user
+  def borrow_book(self, book):
+      if book not in self.borrowed_books:
+          self.borrowed_books.append(book)
+          print(f"{self.name} borrowed '{book.title}'.")
+      else:
+          print(f"{self.name} has already borrowed '{book.title}'.")
+
+  # borrow_book function, the book return by user
+  def return_book(self, book):
+      if book in self.borrowed_books:
+          self.borrowed_books.remove(book)
+          print(f"{self.name} returned '{book.title}'.")
+      else:
+          print(f"{self.name} did not borrow '{book.title}'.")
+        
+# Library class
+class Library:
+  def __init__(self):
+      self.authors = []
+      self.books = []
+      self.users = []
+
+  # add_author function to add new author in library 
+  def add_author(self, author):
+      self.authors.append(author)
+
+  # add_book function to add new book in library
+  def add_book(self, book):
+      self.books.append(book)
+
+  # add_user function to add new user in library
+  def add_user(self, user):
+      self.users.append(user)
+
+  # display_books function, display books with their authors
+  def display_books(self):
+      print("Library Books:")
+      for book in self.books:
+          print(f"{book.title} - {', '.join([author.name for author in book.authors])}")
+
+  # display_users function, display users with borrowed books by them
+  def display_users(self):
+      print("Library Users:")
+      for user in self.users:
+          print(f"{user.name} ({user.email}) - Borrowed Books: {', '.join([book.title for book in user.borrowed_books])}")
+
+
+# Example usage:
+if __name__ == "__main__":
+  library = Library()
+
+  author1 = Author(1, "J.K. Rowling", 1965, "British")
+  author2 = Author(2, "George R.R. Martin", 1948, "American")
+
+  book1 = Book(1, "Harry Potter and the Philosopher's Stone", 1997, [author1])
+  book2 = Book(2, "A Game of Thrones", 1996, [author2])
+
+  user1 = User(1, "Jhon", "jhon@gmail.com")
+  user2 = User(2, "Lily", "lily@gmail.com")
+
+  library.add_author(author1)
+  library.add_author(author2)
+  library.add_book(book1)
+  library.add_book(book2)
+  library.add_user(user1)
+  library.add_user(user2)
+
+  user1.borrow_book(book1)
+  user2.borrow_book(book2)
+  user2.borrow_book(book1)
+
+  user1.return_book(book1)
+
+  library.display_books()
+  library.display_users()
